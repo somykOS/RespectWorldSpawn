@@ -7,6 +7,9 @@
 	"authors": [
 		"Rikai"
 	],
+	"contributors":[
+		"somyk"
+	],
 	"contact": {
 		"homepage": "https://fabricmc.net/",
 		"sources": "https://github.com/FabricMC/fabric-example-mod"
