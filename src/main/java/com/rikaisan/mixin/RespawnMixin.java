@@ -16,13 +16,13 @@ public abstract class RespawnMixin {
 	@Shadow public abstract ServerWorld getServerWorld();
 
 	// Fix spawn angle not being used
-	@ModifyArg(method = "moveToSpawn", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayerEntity;refreshPositionAndAngles(Lnet/minecraft/util/math/BlockPos;FF)V"), index = 1)
+	@ModifyArg(method = "<init>(Lnet/minecraft/server/MinecraftServer;Lnet/minecraft/server/world/ServerWorld;Lcom/mojang/authlib/GameProfile;Lnet/minecraft/network/packet/c2s/common/SyncedClientOptions;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayerEntity;refreshPositionAndAngles(Lnet/minecraft/util/math/Vec3d;FF)V"), index = 1)
 	private float useWorldSpawnAngle(float requestedYaw) {
 		return getServerWorld().getGameRules().getBoolean(RespectWorldSpawn.RESPECT_SPAWN_ROTATION) ? getServerWorld().getSpawnAngle() : requestedYaw;
 	}
 
 	// No need to do much, Adventure mode already has this behaviour.
-	@Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/SaveProperties;getGameMode()Lnet/minecraft/world/GameMode;"), method = "moveToSpawn")
+	@Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/SaveProperties;getGameMode()Lnet/minecraft/world/GameMode;"), method = "getWorldSpawnPos")
 	private GameMode getGameMode(SaveProperties instance) {
 		return getServerWorld().getGameRules().getBoolean(RespectWorldSpawn.RESPECT_SPAWN_HEIGHT) ? GameMode.ADVENTURE : instance.getGameMode();
 	}
